@@ -68,7 +68,7 @@ Open browser and can test:http://localhost:8081/verify-password/
 
 ```
 
-### **Step 5: Zip the project1 folder**
+### **Step 5: Zip the binary file**
 
 ### **Step 6 : Create a fresh container**
 ```bash
