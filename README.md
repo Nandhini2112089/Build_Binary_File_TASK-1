@@ -92,7 +92,7 @@ chmod +x password_checker
 ```
 
 
-### **Step 6: Test**
+### **Step 9: Test**
 Open browser and go to:
 ```
 http://localhost:8082/verify-password/
