@@ -1,5 +1,5 @@
 
-```markdown
+
 # How I Built My FastAPI App into a Binary and Used It in Another Container
 
 This document explains **how I built my FastAPI application into a binary** file using PyInstaller, and how that binary is used to run the application in a completely different container **without needing Python, pip, or the source code**.
