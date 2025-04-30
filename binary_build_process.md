@@ -146,6 +146,4 @@ cd password_checker
 
 Initially, I kept the whole code in one file and used `--onefile`, which produced a large binary (~11MB). Later, when I structured the app into multiple files and **didn’t use `--onefile`**, PyInstaller created a small launcher binary (~4 KB) and an internal folder containing all other files.
 
->  The binary is smaller, but **you must ship the `_internal/` folder too** — both are required for the app to run.
-
 ---
