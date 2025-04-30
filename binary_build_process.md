@@ -6,9 +6,9 @@ This document explains **how I built my FastAPI application into a binary** file
 
 ---
 
-##  What Is a Binary File?
+## What Is a Binary File?
 
-A **binary file** in this context is an **executable** that contains:
+A binary file in this context is an **executable** that contains:
 - The **Python interpreter**
 - All **required libraries**
 - My own **Python source code**
