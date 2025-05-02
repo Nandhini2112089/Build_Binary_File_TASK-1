@@ -1,0 +1,53 @@
+This document explains why binaries built on Rocky Linux may not run on older distributions like Red Hat.
+## What is glibc?
+
+The GNU C Library (**glibc**) is a fundamental component of most Linux systems. It provides the core libraries needed for programs to run, such as:
+
+* File operations (open, read, write)
+* Memory allocation (malloc, free)
+* Input/output handling (printf, scanf)
+* Networking (socket communication)
+* Time management (sleep, clock)
+
+glibc is used by programs written in C, C++, Python, and many other languages that interact with the operating system.
+
+## Why Programs Depend on glibc
+
+When a program is compiled, it doesn't contain all the low-level functions it needs. Instead, it links to glibc dynamically. At runtime, the program expects the operating system to provide the correct version of glibc with the functions it needs.
+
+## Compatibility Issues
+
+Each Linux distribution ships with a different version of glibc:
+
+* **Rocky Linux 9** may include glibc 2.34
+* **Ubuntu 20.04** includes glibc 2.31
+* **Red Hat UBI 8** may have glibc 2.28
+* **Older Red Hat 7** may have glibc 2.17
+
+If you compile a program on a system with a **newer version of glibc** (e.g., Rocky Linux 9), the resulting binary may require features not present in **older glibc versions** (e.g., Red Hat 7).
+
+### Example Error:
+
+```
+[PYI-37:ERROR] Failed to load Python shared library '/password_checker/_internal/libpython3.9.so.1.0':
+/lib64/libm.so.6: version `GLIBC_2.29' not found
+```
+
+This means the binary expects glibc 2.29, but the system has an older version.
+
+## Why It Worked on Ubuntu but Not on Red Hat
+
+* **Ubuntu** (with glibc >= 2.29): Has the necessary glibc version. The binary runs successfully.
+* **Red Hat** (glibc < 2.29): Lacks the required glibc version. The binary fails to run.
+
+## Solutions
+
+To make binaries work across different distributions:
+
+1. **Build on the oldest target system** (e.g., CentOS 7 with glibc 2.17) for maximum compatibility.
+2. **Use static compilation** to bundle all required libraries with the binary (increases size).
+3. **Use Docker images** consistently so the runtime environment always matches the build environment.
+4. **Check glibc version compatibility** using `ldd --version` or inspecting binaries with `readelf`.
+
+---
+
