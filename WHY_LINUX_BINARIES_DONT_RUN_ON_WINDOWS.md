@@ -42,5 +42,3 @@ This repository explains the reasons why Linux binaries don't run on Windows and
 ## Conclusion
 Linux binaries don't run on Windows due to differences in executable formats, system calls, libraries, and kernel interactions. To make a Linux binary executable on Windows, you can use tools like **WSL**, **cross-compilation**, or **virtual machines**.
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
