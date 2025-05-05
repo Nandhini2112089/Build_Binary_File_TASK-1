@@ -21,8 +21,6 @@ DOCKER_ARTIFACTORY/
 
 ---
 
-
-
 ##  How to Run
 
 ### 1. Build & Run Using Docker Compose
