@@ -4,7 +4,7 @@
 ````
 DOCKER_ARTIFACTORY/
 ├── lib/
-│   ├── **init**.py
+│   ├── __init__.py
 │   ├── app.py          # App initialization (FastAPI instance)
 │   ├── models.py       # Pydantic models for request/response
 │   ├── routes.py       # API endpoints
@@ -64,15 +64,11 @@ If you make changes to source files, re-run:
 ```bash
 docker-compose up --build
 ```
-
 This ensures the image and binary are rebuilt.
 
 ---
 
-
 ```
 
 ---
 
-Let me know if you want a section on how to write unit tests or a CI example using GitHub Actions.
-```
