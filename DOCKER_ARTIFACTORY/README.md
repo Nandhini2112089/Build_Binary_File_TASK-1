@@ -69,6 +69,3 @@ This ensures the image and binary are rebuilt.
 ---
 
 ```
-
----
-
