@@ -1,7 +1,7 @@
 # Why Linux Binaries Don't Run on Windows
 
 ## Overview
-This repository explains the reasons why Linux binaries don't run on Windows and provides solutions to make them executable on Windows.
+This document explains the reasons why Linux binaries don't run on Windows and provides solutions to make them executable on Windows.
 
 ## Reasons
 
