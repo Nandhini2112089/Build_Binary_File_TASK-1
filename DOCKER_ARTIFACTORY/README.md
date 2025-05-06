@@ -1,7 +1,6 @@
 ## Project Structure
 
 
-````
 DOCKER_ARTIFACTORY/
 ├── lib/
 │   ├── __init__.py
@@ -66,4 +65,3 @@ This ensures the image and binary are rebuilt.
 
 ---
 
-```
