@@ -33,7 +33,7 @@ docker-compose up --build
 * Runs `build.sh` to generate a binary using PyInstaller
 * Executes the binary inside the container
 
-App will be available at: [http://localhost:8089](http://localhost:8089)
+App will be available at: [http://localhost:8089/verify-password](http://localhost:8089/verify-password)
 
 ---
 
