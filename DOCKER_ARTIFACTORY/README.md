@@ -1,6 +1,6 @@
 ## Project Structure
 
-
+```
 DOCKER_ARTIFACTORY/
 ├── lib/
 │   ├── __init__.py
