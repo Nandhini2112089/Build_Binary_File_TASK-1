@@ -13,8 +13,7 @@ DOCKER_ARTIFACTORY/
 │   └── main.py         # Entry point calling FastAPI app
 │
 ├── Dockerfile          # Builds the container image
-├── build.sh            # Builds a binary using PyInstaller
-└── docker-compose.yml  # Defines how to build/run containerized app
+└── build.sh            # Builds a binary using PyInstaller
 
 ````
 
@@ -25,7 +24,8 @@ DOCKER_ARTIFACTORY/
 ### 1. Build & Run Using Docker Compose
 
 ```bash
-docker-compose up --build
+docker build -t <image_name> .
+docker run -it -p 8089:8081 <image_name>
 ````
 
 * This builds the Docker image
@@ -59,7 +59,7 @@ bin/password_checker/password_checker
 If you make changes to source files, re-run:
 
 ```bash
-docker-compose up --build
+docker build -t <image_name> .
 ```
 This ensures the image and binary are rebuilt.
 
