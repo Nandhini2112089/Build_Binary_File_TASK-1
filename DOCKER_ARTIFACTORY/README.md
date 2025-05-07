@@ -21,7 +21,7 @@ DOCKER_ARTIFACTORY/
 
 ##  How to Run
 
-### 1. Build & Run Using Docker Compose
+### Build & Run Image
 
 ```bash
 docker build -t <image_name> .
