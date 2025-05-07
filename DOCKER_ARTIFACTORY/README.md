@@ -36,15 +36,6 @@ App will be available at: [http://localhost:8089/verify-password](http://localho
 
 ---
 
-### 2. Manual Docker Build & Run
-
-```bash
-docker build -t docker_artifactory-app .
-docker run -p 8089:8081 docker_artifactory-app
-```
-
----
-
 ##  Output Binary
 
 After build, PyInstaller places the binary in:
