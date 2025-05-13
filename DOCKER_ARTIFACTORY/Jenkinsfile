@@ -12,9 +12,9 @@ pipeline {
             }
         }
 
-        stage('Run Unit Tests') {
-            steps {
-                sh 'python3 -m unittest discover -s /var/jenkins_home/workspace/Password_Checker_Pipeline/DOCKER_ARTIFACTORY/tests -p "test_*.py"'
+       stage('Run Unit Tests') {
+    steps {
+        sh 'export PYTHONPATH=$PYTHONPATH:/var/jenkins_home/workspace/Password_Checker_Pipeline/DOCKER_ARTIFACTORY && python3 -m unittest discover -s /var/jenkins_home/workspace/Password_Checker_Pipeline/DOCKER_ARTIFACTORY/tests -p "test_*.py"'
     }
 }
 
