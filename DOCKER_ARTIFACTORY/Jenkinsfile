@@ -18,7 +18,6 @@ pipeline {
             }
         }
 
-
         stage('Linting & Formatting') {
             steps {
                 sh 'black --check lib/ tests/ || true'
