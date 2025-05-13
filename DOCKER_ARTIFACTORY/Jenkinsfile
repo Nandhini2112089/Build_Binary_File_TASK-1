@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9-slim'
-        }
-    }
+    agent any
 
     environment {
         IMAGE_NAME = 'password-checker-app'
@@ -13,7 +9,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    pip install pyinstaller fastapi uvicorn pydantic
+                    python3 -m pip install --upgrade pip
+                    pip3 install pyinstaller fastapi uvicorn pydantic
                 '''
             }
         }
@@ -28,11 +25,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('', '') {
-                        sh 'docker build -t $IMAGE_NAME .'
-                    }
-                }
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
