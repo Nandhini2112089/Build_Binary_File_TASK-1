@@ -1,0 +1,49 @@
+pipeline {
+    agent any  
+    
+    environment {
+        IMAGE_NAME = 'password-checker-app'
+    }
+
+    stages {
+        stage('Install Python Dependencies') {
+            steps {
+                script {
+                    sh '''
+                        python3 -m pip install --upgrade pip
+                        python3 -m pip install pyinstaller fastapi uvicorn pydantic
+                    '''
+                }
+            }
+        }
+
+        stage('Run Build Script') {
+            steps {
+                sh '''
+                    chmod +x ./build.sh
+                    ./build.sh
+                '''
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh '''
+                    python3 -m unittest discover -s ./DOCKER_ARTIFACTORY/tests -p "test_validator.py"
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run -d -p 8099:8081 $IMAGE_NAME'
+            }
+        }
+    }
+}
