@@ -1,6 +1,5 @@
 
-
-# 📄 Jenkins Build Log Inspection Guide
+# Jenkins Build Log Inspection Guide
 
 This document explains how to **view build log details** and **check the size of individual Jenkins builds** from inside the Docker container.
 
