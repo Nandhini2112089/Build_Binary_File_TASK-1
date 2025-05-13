@@ -9,7 +9,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    pip3 install pyinstaller fastapi uvicorn pydantic
+                    pip install pyinstaller fastapi uvicorn pydantic
                 '''
             }
         }
