@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Install Dependencies') {
     steps {
-        sh 'sudo pip install pyinstaller fastapi uvicorn pydantic black flake8 pylint'
+        sh 'pip install pyinstaller fastapi uvicorn pydantic black flake8 pylint'
     }
 }
 
