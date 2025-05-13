@@ -1,14 +1,18 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            filename 'Dockerfile'         // Dockerfile name
+            dir 'JENKINS_PIPELINE'        // Directory containing Dockerfile
+            additionalBuildArgs ''
+        }
+    }
 
     environment {
-        APP_IMAGE = "password-checker-app"
-        CONTAINER_NAME = "password-checker-container"
-        PORT = "8091"
+        BINARY_NAME = "password_checker"
+        BINARY_PATH = "bin/password_checker"
     }
 
     stages {
-
         stage('Clone Repo') {
             steps {
                 checkout scm
@@ -18,10 +22,7 @@ pipeline {
         stage('Build Binary') {
             steps {
                 dir('JENKINS_PIPELINE') {
-                    sh '''
-                        chmod +x build.sh
-                        ./build.sh
-                    '''
+                    sh './build.sh'
                 }
             }
         }
@@ -29,26 +30,21 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('JENKINS_PIPELINE') {
-                    sh '''
-                        docker build -t $APP_IMAGE .
-                    '''
+                    sh 'docker build -t password-checker-app .'
                 }
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh '''
-                    docker rm -f $CONTAINER_NAME || true
-                    docker run -d -p ${PORT}:8081 --name $CONTAINER_NAME $APP_IMAGE
-                '''
+                sh 'docker run -d --rm -p 8090:8080 --name password-checker password-checker-app'
             }
         }
     }
 
     post {
         always {
-            echo "Pipeline finished!"
+            echo 'Pipeline finished!'
         }
     }
 }
