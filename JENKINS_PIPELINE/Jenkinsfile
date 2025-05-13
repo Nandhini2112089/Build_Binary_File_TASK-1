@@ -1,43 +1,39 @@
 pipeline {
     agent {
-        dockerfile {
-            filename 'Dockerfile'        
-            dir 'JENKINS_PIPELINE'        
-            additionalBuildArgs ''
+        docker {
+            image 'docker:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
 
     environment {
-        BINARY_NAME = "password_checker"
-        BINARY_PATH = "bin/password_checker"
+        BUILD_SCRIPT = 'JENKINS_PIPELINE/build.sh'
     }
 
     stages {
         stage('Clone Repo') {
             steps {
-                checkout scm
+                echo 'Repository already checked out by Jenkins'
             }
         }
 
-        stage('Build Binary') {
+        stage('Show Docker Version') {
             steps {
-                dir('JENKINS_PIPELINE') {
-                    sh './build.sh'
-                }
+                sh 'docker --version'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                dir('JENKINS_PIPELINE') {
-                    sh 'docker build -t password-checker-app .'
-                }
+                sh 'docker build -t password-checker -f JENKINS_PIPELINE/Dockerfile JENKINS_PIPELINE'
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Run Build Script Inside Docker') {
             steps {
-                sh 'docker run -d --rm -p 8090:8080 --name password-checker password-checker-app'
+                sh '''
+                    docker run --rm -v $(pwd):/app -w /app password-checker bash $BUILD_SCRIPT
+                '''
             }
         }
     }
@@ -45,6 +41,12 @@ pipeline {
     post {
         always {
             echo 'Pipeline finished!'
+        }
+        failure {
+            echo 'Build failed.'
+        }
+        success {
+            echo 'Build succeeded.'
         }
     }
 }
