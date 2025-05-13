@@ -9,8 +9,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    python3 -m pip install --upgrade pip
-                    python3 -m pip install pyinstaller fastapi uvicorn pydantic
+                   chmod +x ./build.sh
+                   ./build.sh
                 '''
             }
         }
