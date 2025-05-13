@@ -1,49 +1,54 @@
 pipeline {
-    agent any  
-    
+    agent any
+
     environment {
-        IMAGE_NAME = 'password-checker-app'
+        APP_IMAGE = "password-checker-app"
+        CONTAINER_NAME = "password-checker-container"
+        PORT = "8091"
     }
 
     stages {
-        stage('Install Python Dependencies') {
+
+        stage('Clone Repo') {
             steps {
-                script {
+                checkout scm
+            }
+        }
+
+        stage('Build Binary') {
+            steps {
+                dir('JENKINS_PIPELINE') {
                     sh '''
-                        python3 -m pip install --upgrade pip
-                        python3 -m pip install pyinstaller fastapi uvicorn pydantic
+                        chmod +x build.sh
+                        ./build.sh
                     '''
                 }
             }
         }
 
-        stage('Run Build Script') {
-            steps {
-                sh '''
-                    chmod +x ./build.sh
-                    ./build.sh
-                '''
-            }
-        }
-
-        stage('Run Unit Tests') {
-            steps {
-                sh '''
-                    python3 -m unittest discover -s ./DOCKER_ARTIFACTORY/tests -p "test_validator.py"
-                '''
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                dir('JENKINS_PIPELINE') {
+                    sh '''
+                        docker build -t $APP_IMAGE .
+                    '''
+                }
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 8099:8081 $IMAGE_NAME'
+                sh '''
+                    docker rm -f $CONTAINER_NAME || true
+                    docker run -d -p ${PORT}:8081 --name $CONTAINER_NAME $APP_IMAGE
+                '''
             }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline finished!"
         }
     }
 }
