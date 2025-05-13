@@ -1,24 +1,16 @@
 pipeline {
-    agent any  // Use 'any' if Docker plugin is not available
-
+    agent any  
+    
     environment {
         IMAGE_NAME = 'password-checker-app'
     }
 
     stages {
-        stage('Install System Packages and Python Dependencies') {
+        stage('Install Python Dependencies') {
             steps {
                 script {
-                    // Run as root or with sudo if necessary
                     sh '''
-                        # Fix permissions and update apt lists
-                        sudo apt-get update || true
-                        sudo apt-get install -y python3 python3-pip gcc make unzip docker.io
-
-                        # Ensure pip is installed
                         python3 -m pip install --upgrade pip
-
-                        # Install required Python packages
                         pip3 install --no-cache-dir pyinstaller fastapi uvicorn pydantic
                     '''
                 }
