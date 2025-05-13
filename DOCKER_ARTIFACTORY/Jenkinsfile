@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = 'password-checker-app'
+    }
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/Nandhini2112089/Build_Binary_File_TASK-1.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt || pip install pyinstaller fastapi uvicorn pydantic'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh 'python3 -m unittest discover tests'
+            }
+        }
+
+        stage('Linting & Formatting') {
+            steps {
+                sh 'black --check lib/ tests/'
+                sh 'flake8 lib/ tests/'
+                sh 'pylint lib/*.py'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker run -d -p 8099:8081 $IMAGE_NAME'
+            }
+        }
+    }
+}
