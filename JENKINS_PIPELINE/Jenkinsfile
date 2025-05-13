@@ -1,8 +1,8 @@
 pipeline {
     agent {
         dockerfile {
-            filename 'Dockerfile'         // Dockerfile name
-            dir 'JENKINS_PIPELINE'        // Directory containing Dockerfile
+            filename 'Dockerfile'        
+            dir 'JENKINS_PIPELINE'        
             additionalBuildArgs ''
         }
     }
