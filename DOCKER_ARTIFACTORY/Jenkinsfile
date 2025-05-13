@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Install Dependencies') {
     steps {
-        sh 'pip install pyinstaller fastapi uvicorn pydantic black flake8 pylint'
+        sh 'pip install pyinstaller fastapi uvicorn pydantic'
     }
 }
 
@@ -19,13 +19,7 @@ pipeline {
 }
 
 
-        stage('Linting & Formatting') {
-            steps {
-                sh 'black --check lib/ tests/ || true'
-                sh 'flake8 lib/ tests/ || true'
-                sh 'pylint lib/*.py || true'
-            }
-        }
+
 
         stage('Build Docker Image') {
             steps {
