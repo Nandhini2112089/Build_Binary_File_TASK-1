@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.9-slim'
+        }
+    }
 
     environment {
         IMAGE_NAME = 'password-checker-app'
@@ -9,22 +13,26 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                    apt-get update
-                    apt-get install -y python3 python3-pip
-                    pip3 install pyinstaller fastapi uvicorn pydantic
+                    pip install pyinstaller fastapi uvicorn pydantic
                 '''
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'export PYTHONPATH=$PYTHONPATH:/var/jenkins_home/workspace/Password_Checker_Pipeline/DOCKER_ARTIFACTORY && python3 -m unittest discover -s /var/jenkins_home/workspace/Password_Checker_Pipeline/DOCKER_ARTIFACTORY/tests -p "test_*.py"'
+                sh '''
+                    python3 -m unittest discover -s ./DOCKER_ARTIFACTORY/tests -p "test_*.py"
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                script {
+                    docker.withRegistry('', '') {
+                        sh 'docker build -t $IMAGE_NAME .'
+                    }
+                }
             }
         }
 
