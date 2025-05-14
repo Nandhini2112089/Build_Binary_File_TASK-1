@@ -4,6 +4,7 @@ pipeline {
     environment {
         VENV_PATH = "${WORKSPACE}/venv/bin"
         PATH = "${VENV_PATH}:${env.PATH}"
+        DIR = "./PasswordDIR/"
     }
 
     stages {
@@ -29,7 +30,8 @@ pipeline {
                     sh '''
                         . venv/bin/activate
                         rm -rf bin/*
-                        pyinstaller -y JENKINS_PIPELINE/src/main.py --distpath bin --name password_checker --paths=lib  
+                        mkdir $DIR
+                        pyinstaller -y JENKINS_PIPELINE/src/main.py --distpath $DIR/bin --name password_checker --paths=JENKINS_PIPELINE/lib/*  
                     '''
                 }
             }
