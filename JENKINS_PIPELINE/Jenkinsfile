@@ -1,38 +1,23 @@
 pipeline {
     agent any
 
-    environment {
-        VENV_DIR = 'venv'
-    }
-
     stages {
-        stage('Setup') {
+        stage('Install Dependencies') {
             steps {
-                sh '''
-                    python -m venv $VENV_DIR
-                    . $VENV_DIR/bin/activate
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
-                '''
+                sh 'pip3 install --upgrade pip'
+                sh 'pip3 install -r requirements.txt'
             }
         }
 
-        stage('Build') {
+        stage('Lint') {
             steps {
-                sh '''
-                    . $VENV_DIR/bin/activate
-                    python -m py_compile lib/*.py lib/src/*.py
-                    stash name: 'compiled', includes: 'lib/**/*.py*'
-                '''
+                sh 'python3 -m py_compile lib/*.py lib/src/*.py'
             }
         }
 
-        stage('Test') {
+        stage('Run Tests') {
             steps {
-                sh '''
-                    . $VENV_DIR/bin/activate
-                    pytest --junit-xml=test-reports/results.xml tests/
-                '''
+                sh 'pytest --junit-xml=test-reports/results.xml tests/'
             }
             post {
                 always {
@@ -43,14 +28,11 @@ pipeline {
 
         stage('Package') {
             steps {
-                sh '''
-                    . $VENV_DIR/bin/activate
-                    pyinstaller --onefile lib/src/main.py --name password_checker
-                '''
+                sh 'pyinstaller --onefile lib/src/main.py --name password_checker'
             }
         }
 
-        stage('Deliver') {
+        stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'dist/password_checker', fingerprint: true
             }
