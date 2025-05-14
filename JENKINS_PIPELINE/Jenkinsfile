@@ -28,7 +28,7 @@ pipeline {
                 script {
                     sh '''
                         . venv/bin/activate
-                        pyinstaller -y src/main.py --distpath bin --name password_checker --paths=lib
+                        pyinstaller -y JENKINS_PIPELINE/src/main.py --distpath bin --name password_checker --paths=lib
                     '''
                 }
             }
