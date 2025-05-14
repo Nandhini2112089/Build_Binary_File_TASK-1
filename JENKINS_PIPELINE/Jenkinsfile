@@ -16,6 +16,9 @@ pipeline {
                         . venv/bin/activate
                         pip install --upgrade pip
                         pip install pyinstaller
+                        pip install fastapi
+                        pip install uvicorn
+                        pip install pydantic
                     '''
                 }
             }
