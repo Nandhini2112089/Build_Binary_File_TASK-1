@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 
-from lib.app import app
+from app import app
 
 def main():
     uvicorn.run(app, host="0.0.0.0", port=8081)
