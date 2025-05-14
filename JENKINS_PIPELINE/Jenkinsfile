@@ -28,7 +28,7 @@ pipeline {
                 script {
                     sh '''
                         . venv/bin/activate
-                        pwd  # Print the working directory to ensure you're in the correct path
+                        rm -rf bin/*
                         pyinstaller -y JENKINS_PIPELINE/src/main.py --distpath bin --name password_checker --paths=lib  
                     '''
                 }
