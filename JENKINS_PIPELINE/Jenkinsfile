@@ -22,7 +22,8 @@ pipeline {
             steps {
                 sh '''
                     . venv/bin/activate
-                    pyinstaller --onefile src/main.py --name password_checker
+                      pyinstaller --onefile jenkins_pipeline/src/main.py --name password_checker
+
                 '''
             }
         }
