@@ -1,11 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        PATH = "/venv/bin:$PATH" // Ensure the virtual environment path is available
+    }
+
     stages {
         stage('Install Dependencies') {
             steps {
-                sh 'pip3 install --upgrade pip'
-                sh 'pip3 install -r requirements.txt'
+                sh 'python3 -m pip install --upgrade pip'
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
 
