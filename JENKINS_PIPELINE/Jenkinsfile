@@ -6,12 +6,14 @@ pipeline {
     }
 
     stages {
-        stage('Install Dependencies') {
-            steps {
-                sh 'python3 -m pip install --upgrade pip'
-                sh 'python3 -m pip install -r requirements.txt'
-            }
-        }
+       stage('Install Dependencies') {
+        steps {
+        sh '''
+            python3 -m pip install --upgrade pip
+            python3 -m pip install fastapi uvicorn pydantic pytest pyinstaller
+        '''
+    }
+}
 
         stage('Lint') {
             steps {
