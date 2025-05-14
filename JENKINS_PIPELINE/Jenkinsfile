@@ -19,10 +19,13 @@ pipeline {
 
 
         stage('Lint') {
-            steps {
-                sh 'python3 -m py_compile lib/*.py lib/src/*.py'
-            }
-        }
+    steps {
+        sh '''
+            find lib/ src/ tests/ -name "*.py" -exec python3 -m py_compile {} +
+        '''
+    }
+}
+
 
         stage('Run Tests') {
             steps {
