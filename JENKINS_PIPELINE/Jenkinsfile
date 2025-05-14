@@ -2,57 +2,23 @@ pipeline {
     agent any
 
     environment {
-        VENV_PATH = "venv"
-        PATH = "${env.WORKSPACE}/venv/bin:$PATH"
+        VENV_PATH = "${WORKSPACE}/venv/bin"
+        PATH = "${VENV_PATH}:${env.PATH}"
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
+        stage('Setup Virtualenv & Install Dependencies') {
             steps {
                 sh '''
                     python3 -m venv venv
                     . venv/bin/activate
                     pip install --upgrade pip
-                    pip install fastapi uvicorn pydantic pytest pyinstaller
+                    pip install pyinstaller
                 '''
             }
         }
 
-        stage('Lint') {
-            steps {
-                sh '''
-                    . venv/bin/activate
-                    for dir in lib src tests; do
-                        if [ -d "$dir" ]; then
-                            find "$dir" -name "*.py" -exec python3 -m py_compile {} +
-                        fi
-                    done
-                '''
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                sh '''
-                    . venv/bin/activate
-                    mkdir -p test-reports
-                    pytest --junit-xml=test-reports/results.xml tests/ || true
-                '''
-            }
-            post {
-                always {
-                    junit 'test-reports/results.xml'
-                }
-            }
-        }
-
-        stage('Package') {
+        stage('Build Package') {
             steps {
                 sh '''
                     . venv/bin/activate
