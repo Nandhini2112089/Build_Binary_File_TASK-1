@@ -40,7 +40,7 @@ pipeline {
         stage('Archive') {
             steps {
                 script {
-                    archiveArtifacts artifacts: 'bin/**', fingerprint: true  
+                    archiveArtifacts artifacts: '$DIR/bin/**', fingerprint: true  
                 }
             }
         }
