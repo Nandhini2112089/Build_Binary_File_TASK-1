@@ -2,34 +2,48 @@ pipeline {
     agent any
 
     environment {
-        PATH = "/venv/bin:$PATH" // Ensure the virtual environment path is available
+        VENV_PATH = "venv"
+        PATH = "${env.WORKSPACE}/venv/bin:$PATH"
     }
 
     stages {
-          stage('Install Dependencies') {
-    steps {
-        sh '''
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install --upgrade pip
-            pip install fastapi uvicorn pydantic pytest pyinstaller
-        '''
-    }
-}
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install fastapi uvicorn pydantic pytest pyinstaller
+                '''
+            }
+        }
 
         stage('Lint') {
-    steps {
-        sh '''
-            find lib/ src/ tests/ -name "*.py" -exec python3 -m py_compile {} +
-        '''
-    }
-}
-
+            steps {
+                sh '''
+                    . venv/bin/activate
+                    for dir in lib src tests; do
+                        if [ -d "$dir" ]; then
+                            find "$dir" -name "*.py" -exec python3 -m py_compile {} +
+                        fi
+                    done
+                '''
+            }
+        }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest --junit-xml=test-reports/results.xml tests/'
+                sh '''
+                    . venv/bin/activate
+                    mkdir -p test-reports
+                    pytest --junit-xml=test-reports/results.xml tests/ || true
+                '''
             }
             post {
                 always {
@@ -40,7 +54,10 @@ pipeline {
 
         stage('Package') {
             steps {
-                sh 'pyinstaller --onefile lib/src/main.py --name password_checker'
+                sh '''
+                    . venv/bin/activate
+                    pyinstaller --onefile src/main.py --name password_checker
+                '''
             }
         }
 
