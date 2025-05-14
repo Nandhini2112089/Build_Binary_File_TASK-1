@@ -1,52 +1,65 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     environment {
-        BUILD_SCRIPT = 'JENKINS_PIPELINE/build.sh'
+        VENV_DIR = 'venv'
     }
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                echo 'Repository already checked out by Jenkins'
-            }
-        }
-
-        stage('Show Docker Version') {
-            steps {
-                sh 'docker --version'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t password-checker -f JENKINS_PIPELINE/Dockerfile JENKINS_PIPELINE'
-            }
-        }
-
-        stage('Run Build Script Inside Docker') {
+        stage('Setup') {
             steps {
                 sh '''
-                    docker run --rm -v $(pwd):/app -w /app password-checker bash $BUILD_SCRIPT
+                    python -m venv $VENV_DIR
+                    . $VENV_DIR/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
                 '''
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh '''
+                    . $VENV_DIR/bin/activate
+                    python -m py_compile lib/*.py lib/src/*.py
+                    stash name: 'compiled', includes: 'lib/**/*.py*'
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '''
+                    . $VENV_DIR/bin/activate
+                    pytest --junit-xml=test-reports/results.xml tests/
+                '''
+            }
+            post {
+                always {
+                    junit 'test-reports/results.xml'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh '''
+                    . $VENV_DIR/bin/activate
+                    pyinstaller --onefile lib/src/main.py --name password_checker
+                '''
+            }
+        }
+
+        stage('Deliver') {
+            steps {
+                archiveArtifacts artifacts: 'dist/password_checker', fingerprint: true
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline finished!'
-        }
-        failure {
-            echo 'Build failed.'
-        }
-        success {
-            echo 'Build succeeded.'
+            cleanWs()
         }
     }
 }
