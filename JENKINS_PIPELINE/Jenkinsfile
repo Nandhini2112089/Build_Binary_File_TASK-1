@@ -4,38 +4,39 @@ pipeline {
     environment {
         VENV_PATH = "${WORKSPACE}/venv/bin"
         PATH = "${VENV_PATH}:${env.PATH}"
+        DIST_PATH = "${WORKSPACE}/dist" 
     }
 
     stages {
         stage('Setup Virtualenv & Install Dependencies') {
             steps {
-                sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
-                    pip install --upgrade pip
-                    pip install pyinstaller
-                '''
+                script {
+                    sh '''
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install --upgrade pip
+                        pip install pyinstaller
+                    '''
+                }
             }
         }
 
         stage('Build Package') {
             steps {
-                sh '''
-                    . venv/bin/activate
-                    echo "Current Directory: $(pwd)"
-                    echo "List files:"
-                    ls -R
-                    pyinstaller --onefile JENKINS_PIPELINE/src/main.py --name password_checker
-                    echo "Build output:"
-                    ls -l dist/
-                '''
+                script {
+                    sh '''
+                        . venv/bin/activate
+                        pyinstaller --onefile --distpath ${DIST_PATH} JENKINS_PIPELINE/src/password_checker.py --name password_checker
+                    '''
+                }
             }
         }
 
         stage('Archive') {
             steps {
-                sh 'ls -l dist/'
-                archiveArtifacts artifacts: 'dist/password_checker', fingerprint: true
+                script {
+                    archiveArtifacts artifacts: 'dist/password_checker', fingerprint: true
+                }
             }
         }
     }
