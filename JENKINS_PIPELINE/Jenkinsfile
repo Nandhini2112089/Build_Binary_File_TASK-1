@@ -22,14 +22,19 @@ pipeline {
             steps {
                 sh '''
                     . venv/bin/activate
-                      pyinstaller --onefile JENKINS_PIPELINE/src/main.py --name password_checker
-
+                    echo "Current Directory: $(pwd)"
+                    echo "List files:"
+                    ls -R
+                    pyinstaller --onefile JENKINS_PIPELINE/src/main.py --name password_checker
+                    echo "Build output:"
+                    ls -l dist/
                 '''
             }
         }
 
         stage('Archive') {
             steps {
+                sh 'ls -l dist/'
                 archiveArtifacts artifacts: 'dist/password_checker', fingerprint: true
             }
         }
