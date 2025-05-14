@@ -37,7 +37,7 @@ pipeline {
         stage('Archive') {
             steps {
                 script {
-                    archiveArtifacts artifacts: 'bin/password_checker', fingerprint: true
+                    archiveArtifacts artifacts: 'bin/*', fingerprint: true
                 }
             }
         }
