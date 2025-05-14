@@ -28,7 +28,9 @@ pipeline {
                 script {
                     sh '''
                         . venv/bin/activate
-                        pyinstaller -y JENKINS_PIPELINE/src/main.py --distpath bin --name password_checker --paths=lib
+                        pwd  # Print the working directory to ensure you're in the correct path
+                        pyinstaller -y JENKINS_PIPELINE/src/main.py --distpath bin --name password_checker --paths=lib --log-level=DEBUG
+                        ls -l bin 
                     '''
                 }
             }
@@ -37,7 +39,7 @@ pipeline {
         stage('Archive') {
             steps {
                 script {
-                    archiveArtifacts artifacts: 'bin/*', fingerprint: true
+                    archiveArtifacts artifacts: 'bin/**', fingerprint: true  
                 }
             }
         }
