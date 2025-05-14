@@ -4,7 +4,6 @@ pipeline {
     environment {
         VENV_PATH = "${WORKSPACE}/venv/bin"
         PATH = "${VENV_PATH}:${env.PATH}"
-        DIST_PATH = "${WORKSPACE}/dist" 
     }
 
     stages {
@@ -29,8 +28,7 @@ pipeline {
                 script {
                     sh '''
                         . venv/bin/activate
-                       pyinstaller --onefile --distpath ${DIST_PATH} --name password_checker --paths=lib JENKINS_PIPELINE/src/main.py
- 
+                        pyinstaller -y src/main.py --distpath bin --name password_checker --paths=lib
                     '''
                 }
             }
@@ -39,7 +37,7 @@ pipeline {
         stage('Archive') {
             steps {
                 script {
-                    archiveArtifacts artifacts: 'dist/password_checker', fingerprint: true
+                    archiveArtifacts artifacts: 'bin/password_checker', fingerprint: true
                 }
             }
         }
