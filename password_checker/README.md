@@ -94,7 +94,7 @@ uvicorn.run(app, host="0.0.0.0", port=8081)
 
 So, when deployed inside Docker, and with port 8081 mapped to host port 8092:
 
-* 📍 Access it via: [http://localhost:8092/verify-password](http://localhost:8092/verify-password)
+*  Access it via: [http://localhost:8092/verify-password](http://localhost:8092/verify-password)
 
 ---
 
@@ -183,15 +183,8 @@ unzip password_checker.zip
 ```
 
 * This launches the FastAPI app on **port 8081**
-* 📍 Access via: [http://localhost:8081/verify-password](http://localhost:8081/verify-password)
+* Access via: [http://localhost:8081/verify-password](http://localhost:8081/verify-password)
 
 ---
 
 
-## ✅ Summary
-
-* Jenkins + Docker CI/CD pipeline
-* Custom Jenkins Docker image with Python tools
-* FastAPI app converted to binary with PyInstaller
-* Final zipped build archived and downloadable
-* Clean explanation for beginners
