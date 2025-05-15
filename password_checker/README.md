@@ -152,7 +152,7 @@ pipeline {
 
 ---
 
-## 🔍 Jenkinsfile Explained for Beginners
+## Jenkinsfile Explanation
 
 | Stage                | What it Does                                                                    |
 | -------------------- | ------------------------------------------------------------------------------- |
