@@ -9,9 +9,6 @@ This project contains:
 
 ---
 
-
----
-
 ##  Why Build a Custom Jenkins Image?
 
 The **official Jenkins Docker image does not include Python** or pip by default. This project needs Python to install dependencies and run `pyinstaller`. So, we:
