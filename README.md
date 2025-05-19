@@ -52,7 +52,7 @@ USER jenkins
 docker build -t jenkins-python-docker .
 ```
 
-### ▶️ Run Jenkins Container
+### Run Jenkins Container
 
 ```bash
 docker run -d \
@@ -64,7 +64,7 @@ docker run -d \
   jenkins-python-docker
 ```
 
-### 🌐 Access Jenkins
+### Access Jenkins
 
 * URL: [http://localhost:8091](http://localhost:8091)
 * Get admin password:
