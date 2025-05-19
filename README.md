@@ -1,6 +1,4 @@
 ---
-## Overview
-
 This document shows how to:
 
 * Build a **custom Jenkins Docker image** named `jenkins-python-docker` that includes Python and Docker CLI.
