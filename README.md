@@ -1,5 +1,5 @@
 ---
-
+---
 This document shows how to:
 
 - Build a **custom Jenkins Docker image** `jenkins-python-docker` with Python & Docker CLI
