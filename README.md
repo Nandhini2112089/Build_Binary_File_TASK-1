@@ -1,4 +1,3 @@
----
 
 This document shows how to:
 
