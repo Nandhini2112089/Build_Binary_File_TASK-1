@@ -1,5 +1,4 @@
 ---
-
 ## Overview
 
 This document shows how to:
@@ -56,7 +55,7 @@ USER jenkins
 From the directory containing `CustomJenkins.Dockerfile`:
 
 ```bash
-docker build -t jenkins-python-docker -f CustomJenkins.Dockerfile .
+docker build -t jenkins-python-docker .
 ```
 
 ---
@@ -71,7 +70,7 @@ docker run -d \
   -p 50000:50000 \     # Jenkins agent port
   -v /var/run/docker.sock:/var/run/docker.sock \  # Allow Docker commands inside Jenkins
   -v jenkins_home:/var/jenkins_home \             # Persistent Jenkins data
-  --name myjenkins \
+  --name jenkins-app \
   jenkins-python-docker
 ```
 
